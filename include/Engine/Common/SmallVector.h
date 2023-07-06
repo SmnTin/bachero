@@ -109,7 +109,7 @@ namespace Engine {
         > data;
 
     public:
-        class Iterator : public std::iterator<std::random_access_iterator_tag, T> {
+        class Iterator {
         public:
             Iterator &operator++() { //prefix
                 ++_pnt;
@@ -189,6 +189,8 @@ namespace Engine {
             T *operator->() {
                 return _pnt;
             }
+
+            using iterator_category = std::random_access_iterator_tag;
 
         private:
             T *_pnt = 0;
