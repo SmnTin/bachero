@@ -23,8 +23,8 @@ namespace Engine::Render {
             Math::Rect_ui src(Math::Vector2ui(frame.x * frameSize.x,
                                               frame.y * frameSize.y),
                               frameSize);
-            Math::Rect_ui dst(position - cameraPos,
-                              frameSize);
+            Math::Rect_i dst(position - cameraPos,
+                             frameSize);
             texture->draw(src, dst, anchorPointLocal, rotation, flip);
         }
 
