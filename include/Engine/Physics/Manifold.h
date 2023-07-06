@@ -72,7 +72,7 @@ namespace Engine::Physics {
             if (bodyA->hasComponent<SurfaceComponent>())
                 surfaceA = bodyA->getComponent<SurfaceComponent>()->surface;
             if (bodyB->hasComponent<SurfaceComponent>())
-                surfaceA = bodyB->getComponent<SurfaceComponent>()->surface;
+                surfaceB = bodyB->getComponent<SurfaceComponent>()->surface;
 
             dt = (float) DeltaTime::get();
             friction = sqrtf(surfaceA.friction * surfaceB.friction);
