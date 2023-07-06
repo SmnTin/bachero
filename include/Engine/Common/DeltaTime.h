@@ -17,9 +17,9 @@ namespace Engine {
             }
         }
 
-        static double get() {
+        static float get() {
             auto delta = std::chrono::duration_cast<std::chrono::nanoseconds>(cur - prev).count();
-            return delta / 1e9;
+            return (float) delta / 1e9f;
         }
 
     private:

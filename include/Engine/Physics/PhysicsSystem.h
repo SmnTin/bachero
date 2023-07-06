@@ -53,9 +53,11 @@ namespace Engine::Physics {
             else
                 updateTree();
 
-            broadPhase(dt);
-            removeInvalidManifolds();
+            clearForces();
+            applyFriction();
             integrateForces(dt);
+            broadPhase();
+            removeInvalidManifolds();
             calcPreStep(dt);
             performIterativeCollisionResolution();
             integrateVelocities(dt);
@@ -137,7 +139,7 @@ namespace Engine::Physics {
                 }
         }
 
-        void broadPhase(double dt) {
+        void broadPhase() {
             for (auto *bodyA : _bodies) {
                 if (!bodyA->isActive())
                     continue;
@@ -177,7 +179,7 @@ namespace Engine::Physics {
                 _manifolds.erase(key);
         }
 
-        void calcPreStep(double dt) {
+        void calcPreStep(float dt) {
             for (auto&[key, manifold] : _manifolds)
                 manifold.preStep(dt);
         }
@@ -188,11 +190,42 @@ namespace Engine::Physics {
                     manifold.resolve();
         }
 
-        void integrateForces(double dt) {
+        void integrateForces(float dt) {
+            const float backgroundFriction = 15.0f;
+            const float gravity = 9.8f;
+
             for (auto &body : _bodies)
                 if (body->isActive()) {
                     auto *rigid = body->getComponent<RigidBodyComponent>();
+                    auto velocity = rigid->velocity;
+
                     rigid->integrateForces(dt);
+                }
+        }
+
+        void applyFriction() {
+            const float backgroundFriction = 15.0f;
+            const float gravity = 9.8f;
+
+            for (auto &body : _bodies)
+                if (body->isActive()) {
+                    auto *rigid = body->getComponent<RigidBodyComponent>();
+                    auto velocity = rigid->velocity;
+
+                    if (rigid->velocity.lengthSqr() < 0.4f)
+                        rigid->velocity = Math::Vector2f();
+
+                    if (velocity.lengthSqr() > 1e-6) {
+                        velocity.normalize();
+                        rigid->applyAcceleration(-velocity * gravity * backgroundFriction);
+                    }
+
+                    if (rigid->angularVelocity < 0.2f)
+                        rigid->angularVelocity = 0;
+
+                    auto angularVelocity = rigid->angularVelocity;
+                    float direction = std::min(angularVelocity, 1.0f);
+                    rigid->applyTorque(-direction * gravity * backgroundFriction);
                 }
         }
 

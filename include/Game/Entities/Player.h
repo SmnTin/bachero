@@ -13,9 +13,8 @@
 
 class Player : public Engine::ECS::Entity {
 public:
-    explicit Player() {
-        addComponent<Engine::TransformComponent>(
-                Engine::Math::Vector2f(100, 100));
+    explicit Player(Engine::Math::Vector2f initialPos) {
+        addComponent<Engine::TransformComponent>(initialPos);
 
         auto *texture = Engine::Render::TextureManager::getInstance()->
                 loadTexture("assets/player.png",
