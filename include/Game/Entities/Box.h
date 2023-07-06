@@ -4,6 +4,7 @@
 #include "Engine/Components/TransformComponent.h"
 #include "Engine/Physics/ColliderComponent.h"
 #include "Engine/Physics/RigidBodyComponent.h"
+#include "Engine/Physics/SurfaceComponent.h"
 
 class Box : public Engine::ECS::Entity {
 public:
@@ -21,7 +22,8 @@ public:
                 -size / 2,
                 size,
         });
-        addComponent<Engine::Physics::RigidBodyComponent>(20, 0.5, 0.5);
+        addComponent<Engine::Physics::RigidBodyComponent>(20);
+        addComponent<Engine::Physics::SurfaceComponent>(Engine::Physics::SurfaceFactory::createWood());
     }
 
 private:

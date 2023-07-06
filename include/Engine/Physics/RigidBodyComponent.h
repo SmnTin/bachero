@@ -6,12 +6,8 @@
 namespace Engine::Physics {
     class RigidBodyComponent : public ECS::DataOnlyComponent {
     public:
-        explicit RigidBodyComponent(float _mass = 0,
-                                    float _restitution = 0,
-                                    float _friction = 0)
-                : mass(_mass), invMass(_mass > 0.0f ? 1.0f / _mass : 0.0f),
-                  restitution(_restitution), friction(_friction) {
-        }
+        explicit RigidBodyComponent(float _mass = 0)
+                : mass(_mass), invMass(_mass > 0.0f ? 1.0f / _mass : 0.0f) {}
 
         void init() override {
             if (!owner->hasComponent<TransformComponent>())
@@ -80,8 +76,6 @@ namespace Engine::Physics {
         const float mass;
         const float invMass;
         const float I = 0.0f, invI = 0.0f;
-        const float restitution;
-        const float friction;
 
         float torque = 0;
         float angularVelocity = 0;

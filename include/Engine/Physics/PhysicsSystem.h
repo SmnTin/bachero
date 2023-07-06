@@ -24,7 +24,7 @@ namespace Engine::Physics {
                 : _renderer(renderer) {}
 
         void render(Math::Rect_d rect) override {
-            auto sdlRect = (SDL_Rect)rect;
+            auto sdlRect = (SDL_Rect) rect;
             SDL_SetRenderDrawColor(
                     _renderer,
                     0, 0, 255, 255);
@@ -102,6 +102,7 @@ namespace Engine::Physics {
         AABBTree _tree;
         std::size_t _tickCounter = 0;
         const std::size_t _treeRebuildTicks = 60;
+        std::vector<ECS::Entity *> _surfaces;
         std::vector<ECS::Entity *> _bodies;
         HashMap<ManifoldKey, Manifold> _manifolds;
 

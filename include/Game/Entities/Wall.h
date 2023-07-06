@@ -4,6 +4,7 @@
 #include "Engine/Components/TransformComponent.h"
 #include "Engine/Physics/ColliderComponent.h"
 #include "Engine/Physics/RigidBodyComponent.h"
+#include "Engine/Physics/SurfaceComponent.h"
 
 class Wall : public Engine::ECS::Entity {
 public:
@@ -15,7 +16,8 @@ public:
                 Engine::Math::Vector2i(0, 0),
                 rect.size
         });
-        addComponent<Engine::Physics::RigidBodyComponent>(0, 0.5, 0.5);
+        addComponent<Engine::Physics::RigidBodyComponent>(0);
+        addComponent<Engine::Physics::SurfaceComponent>(Engine::Physics::SurfaceFactory::createConcrete());
     }
 
 private:

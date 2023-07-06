@@ -54,8 +54,8 @@ public:
         auto *entityManager = Engine::ECS::EntityManager::getInstance();
         auto *player = entityManager->createEntity<Player>();
         player->init();
-        for (int i = 0; i < 3; ++i)
-            for (int j = 0; j < 3; ++j)
+        for (int i = 0; i < 4; ++i)
+            for (int j = 0; j < 4; ++j)
                 entityManager->createEntity<Box>(Engine::Math::Vector2d{50 + i * 15, 10 + j * 15})->init();
         entityManager->createEntity<Wall>(Engine::Math::Rect_d{{0, 0}, {640, 10}})->init();
         entityManager->createEntity<Wall>(Engine::Math::Rect_d{{0, 470}, {640, 10}})->init();

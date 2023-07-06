@@ -9,6 +9,7 @@
 
 #include "Engine/Physics/ColliderComponent.h"
 #include "Engine/Physics/RigidBodyComponent.h"
+#include "Engine/Physics/SurfaceComponent.h"
 #include "Engine/ECS/ECS.h"
 
 namespace Engine::Physics {
@@ -66,8 +67,15 @@ namespace Engine::Physics {
             colliderA = bodyA->getComponent<ColliderComponent>();
             colliderB = bodyB->getComponent<ColliderComponent>();
 
-            dt = DeltaTime::get();
-            friction = sqrtf(rigidA->friction * rigidB->friction);
+            Surface surfaceA = SurfaceFactory::createEmpty();
+            Surface surfaceB = SurfaceFactory::createEmpty();
+            if (bodyA->hasComponent<SurfaceComponent>())
+                surfaceA = bodyA->getComponent<SurfaceComponent>()->surface;
+            if (bodyB->hasComponent<SurfaceComponent>())
+                surfaceA = bodyB->getComponent<SurfaceComponent>()->surface;
+
+            dt = (float) DeltaTime::get();
+            friction = sqrtf(surfaceA.friction * surfaceB.friction);
         }
 
         bool detectAndCalcCollision() {
@@ -161,7 +169,7 @@ namespace Engine::Physics {
                 }
             }
 
-//            mergeContacts(oldContacts, oldContactsNum);
+            mergeContacts(oldContacts, oldContactsNum);
 
             return contactsNum > 0;
         }
