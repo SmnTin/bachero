@@ -62,7 +62,7 @@ public:
         entityManager->createEntity<Wall>(Engine::Math::Rect_d{{0, 10}, {10, 460}})->init();
         entityManager->createEntity<Wall>(Engine::Math::Rect_d{{630, 10}, {10, 460}})->init();
         entityManager->createEntity<Wall>()->init();
-        entityManager->createEntity<FollowingCamera>(Engine::Math::Vector2ui(186, 140),
+        entityManager->createEntity<FollowingCamera>(Engine::Math::Vector2ui(186 * 2, 140 * 2),
                                                      player)->init();
     }
 };

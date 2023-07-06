@@ -20,10 +20,11 @@
 namespace Engine::Physics {
     class AABBTreeSDLVisualizer : public AABBTreeVisualizer {
     public:
-        explicit AABBTreeSDLVisualizer(SDL_Renderer *renderer)
-                : _renderer(renderer) {}
+        explicit AABBTreeSDLVisualizer(SDL_Renderer *renderer, Math::Vector2f cameraPos)
+                : _renderer(renderer), _cameraPos(cameraPos) {}
 
         void render(Math::Rect_d rect) override {
+            rect.position -= _cameraPos;
             auto sdlRect = (SDL_Rect) rect;
             SDL_SetRenderDrawColor(
                     _renderer,
@@ -35,6 +36,7 @@ namespace Engine::Physics {
 
     private:
         SDL_Renderer *_renderer;
+        Math::Vector2f _cameraPos;
     };
 
     class PhysicsSystem : public ECS::System {
@@ -69,8 +71,8 @@ namespace Engine::Physics {
                     Math::Vector2f cameraPos =
                             camera->getComponent<TransformComponent>()->position;
 
-//                AABBTreeSDLVisualizer viz(sdlRenderer);
-//                _tree.visualize(viz);
+                    AABBTreeSDLVisualizer viz(renderer->get(), cameraPos);
+                    _tree.visualize(viz);
 
                     for (auto *body : _bodies) {
                         if (!body->isActive())
